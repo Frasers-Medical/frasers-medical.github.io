@@ -25,6 +25,41 @@
   
   <!-- Link to the CSS file in the css/ folder -->
   <link rel="stylesheet" href="css/style.css?v=1.0">
+
+  <script>
+    function initializeDropdowns() {
+      // Reset and populate the dropdown menus
+      const uniSelect = document.getElementById('uni');
+      const topicSelect = document.getElementById('topic');
+      const subTopSelect = document.getElementById('subTop');
+
+      // Clear existing options
+      uniSelect.innerHTML = '';
+      topicSelect.innerHTML = '';
+      subTopSelect.innerHTML = '';
+
+      // Add default options or populate with data
+      uniSelect.add(new Option('Select a University', ''));
+      topicSelect.add(new Option('Select a Category', ''));
+      subTopSelect.add(new Option('Select a Subcategory', ''));
+
+      // Example options (replace with dynamic data if needed)
+      uniSelect.add(new Option('University A', 'uni_a'));
+      uniSelect.add(new Option('University B', 'uni_b'));
+
+      topicSelect.add(new Option('Category A', 'cat_a'));
+      topicSelect.add(new Option('Category B', 'cat_b'));
+
+      subTopSelect.add(new Option('Subcategory A', 'sub_a'));
+      subTopSelect.add(new Option('Subcategory B', 'sub_b'));
+    }
+
+    function reset() {
+      initializeDropdowns();
+    }
+
+    window.onload = initializeDropdowns;
+  </script>
 </head>
 
 <body>
@@ -81,7 +116,6 @@
       </div>
     </div>
   </div>
-
 </body>
 
 </html>
