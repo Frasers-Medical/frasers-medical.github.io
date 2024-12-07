@@ -27,48 +27,49 @@
   <link rel="stylesheet" href="css/style.css?v=1.0">
 
   <script>
+    // Dynamically filter options based on the opts array
+    let opts = [
+      ["ANU", "Bond", "Curtin", "Deakin", "Flinders", "Griffith", "JCU", "Macquarie", "Monash", "Newcastle", "UNDF/UNDS", "Adelaide", "Melbourne", "Sydney", "Wollongong", "Western Australia", "Western Sydney", "UQ"],
+      ["Personal", "Medical School", "Public Health", "Rural Health", "Indigenous Health", "Medical Ethics", "Teamwork", "Cultural Respect", "Decision Making", "Communication", "University Specifics", "Emotional Scenarios", "Acting Stations", "Practical Skills", "Detach", "Video Stations", "Portfolio Stations", "Picture Stations", "Cultural Awareness"],
+      ["Motivation", "Strengths and Weaknesses", "Experience", "Structure", "Resource Allocation", "Opinion", "Confidentiality", "Autonomy", "Justice", "Conflict", "Heirarchy", "Empathy", "Bad News", "Infographic", "Approach to Problem", "Detach", "Explaining Reasoning", "Exploring Motivations", "Understanding Issue", "Displaying Empathy", "Conflict Resolution", "Problem Solving", "Self Care", "Self Awareness", "Leadership", "Risk Assessment", "Beneficence", "Non-Maleficence"]
+    ];
+
     function initializeDropdowns() {
-      // Ensure the `opts` array is available
-      if (typeof opts === "undefined") {
-        console.error("Options array (opts) is not defined.");
-        return;
-      }
-
+      // Populate the first dropdown (universities)
       const uniSelect = document.getElementById('uni');
-      const topicSelect = document.getElementById('topic');
-      const subTopSelect = document.getElementById('subTop');
-
-      // Clear existing options
-      uniSelect.innerHTML = '';
-      topicSelect.innerHTML = '';
-      subTopSelect.innerHTML = '';
-
-      // Populate options dynamically from the `opts` array
+      uniSelect.innerHTML = '<option value="">Select a University</option>';
       opts[0].forEach(option => {
         uniSelect.add(new Option(option, option));
       });
 
-      opts[1].forEach(option => {
-        topicSelect.add(new Option(option, option));
-      });
-
-      opts[2].forEach(option => {
-        subTopSelect.add(new Option(option, option));
-      });
+      // Reset subsequent dropdowns
+      document.getElementById('topic').innerHTML = '<option value="">Select a Category</option>';
+      document.getElementById('subTop').innerHTML = '<option value="">Select a Subcategory</option>';
     }
 
-    function reset() {
-      initializeDropdowns();
-    }
+    function filterDropdown(level) {
+      if (level === 0) {
+        // University selected, enable category dropdown
+        const topicSelect = document.getElementById('topic');
+        topicSelect.innerHTML = '<option value="">Select a Category</option>';
+        opts[1].forEach(option => {
+          topicSelect.add(new Option(option, option));
+        });
 
-    // Ensure initialization happens after the script.js is loaded
-    window.onload = () => {
-      if (typeof opts !== "undefined") {
-        initializeDropdowns();
-      } else {
-        console.error("Options array (opts) not found. Ensure script.js is loaded.");
+        // Reset subcategory dropdown
+        document.getElementById('subTop').innerHTML = '<option value="">Select a Subcategory</option>';
+      } else if (level === 1) {
+        // Category selected, enable subcategory dropdown
+        const subTopSelect = document.getElementById('subTop');
+        subTopSelect.innerHTML = '<option value="">Select a Subcategory</option>';
+        opts[2].forEach(option => {
+          subTopSelect.add(new Option(option, option));
+        });
       }
-    };
+    }
+
+    // Automatically initialize the dropdowns on page load
+    window.onload = initializeDropdowns;
   </script>
 </head>
 
@@ -77,12 +78,12 @@
     <div class="selectionField">
       <span class="selection">
         <h2>University</h2>
-        <select id="uni" onchange="eliminateEmpty(0)">
+        <select id="uni" onchange="filterDropdown(0)">
         </select>
       </span>
       <span class="selection">
         <h2>Category</h2>
-        <select id="topic" onchange="eliminateEmpty(1)">
+        <select id="topic" onchange="filterDropdown(1)">
         </select>
       </span>
       <span class="selection">
@@ -92,7 +93,7 @@
       </span>
       <span class="buttons">
         <button onclick="getStation()" class="big"> Generate MMI Station </button> <br>
-        <button onclick="reset()" class="reset"> Reset </button>
+        <button onclick="initializeDropdowns()" class="reset"> Reset </button>
       </span>
     </div>
 
